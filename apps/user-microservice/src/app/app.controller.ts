@@ -3,6 +3,7 @@ import { Controller, Get, ParseIntPipe, ValidationPipe } from '@nestjs/common';
 import { AppService } from './app.service';
 import { EventPattern, MessagePattern, Payload } from '@nestjs/microservices';
 import { CreateUserDto } from '@nest-microservice-kafka/shared/dto';
+import { UserEvent } from '@nest-microservice-kafka/shared/enum';
 
 @Controller()
 export class AppController {
@@ -12,7 +13,7 @@ export class AppController {
   getData() {
     return this.appService.getData();
   }
-  @EventPattern('create_user')
+  @EventPattern(UserEvent.USER_CREATE)
   handleUserCreate(@Payload(ValidationPipe) data: CreateUserDto) {
     this.appService.createUser(data);
   }
