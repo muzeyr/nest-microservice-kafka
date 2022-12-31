@@ -14,7 +14,7 @@ export class AppService {
     this.usersRepository.save(data);
   }
 
-  getUser(id: number): User {
+  getUser(id: string): User {
     return this.usersRepository.findOne(id);
   }
 }
