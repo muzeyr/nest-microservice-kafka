@@ -15,7 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@nest-microservice-kafka/shared": ["libs/shared/src/index.ts"]
+      "@nest-microservice-kafka/shared": ["libs/shared/src/index.ts"],
+      "@nest-microservice-kafka/shared/dto": ["libs/shared/src/lib/dto/index.ts"],
+      "@nest-microservice-kafka/shared/entity": ["libs/shared/src/lib/entities/index.ts"],
+      "@nest-microservice-kafka/shared/enum": ["libs/shared/src/lib/enum/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
