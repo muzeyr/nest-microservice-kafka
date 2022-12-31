@@ -1,7 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 
 import { AppModule } from './app/app.module';
-import {MicroserviceOptions, Transport} from "@nestjs/microservices";
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { ServiceName } from '@nest-microservice-kafka/shared/enum';
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -14,7 +15,7 @@ async function bootstrap() {
           brokers: ['localhost:9092'],
         },
         consumer: {
-          groupId: 'auth-consumer',
+          groupId: ServiceName.USER_CONSUMER,
         },
       },
     }
