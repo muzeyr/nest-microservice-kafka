@@ -75,14 +75,13 @@ ClientsModule.register([
 ]),
 ```
 
-## Yeni micro servis  
+## New microservice
 
-1.Yeni micro servis oluşturmak için aşağodaki adımları takip edebilirsiniz.
+1. You can follow the steps below to create a new microservice.
 
 ``` nx g @nrwl/nest:app product-microservice ```
 
-2.Api-Gateway projesinde product controller'ları yönlendirebileceğin controller ve servisleri oluştur,
-
+2. Create controllers and services that can be directed by product controllers in the Api-Gateway project.
 ``` cd apps/api-gateway ```
 
 ``` nest generate module product ```
@@ -91,11 +90,13 @@ ClientsModule.register([
 
 ``` nest generate service product ```
 
-//apps/api-gateway/serc/app/app.module.ts'deki importa modulüne ProductModule'ü ejke
+Add ProductModule to the import module in //apps/api-gateway/serc/app/app.module.ts.
 
-##### Eğer yeni entity ihtiyacın varsa
+##### If you need a new entity,
+
 
 //libs/shared/src/lib/entities klasörü altında yeni entity oluştur ve index.ts ile dışarı export etmeyi unutma,
 
-##### Create,Update işlemleri için yeni DTO objeni oluştur
+##### Create a new DTO object for Create and Update operations.
+
 //libs/shared/src/lib/dto klasörü altında yeni dto oluştur ve index.ts ile dışarı export etmeyi unutma,
