@@ -1,22 +1,18 @@
 {
   "extends": "../../tsconfig.base.json",
   "files": [],
-  "include": ["src/lib/**/**/*"],
-  "exclude": ["node_modules"],
+  "include": [],
   "references": [
     {
-      "path": "./tsconfig.lib.json"
+      "path": "./tsconfig.app.json"
     },
     {
       "path": "./tsconfig.spec.json"
     }
   ],
   "compilerOptions": {
-    "target": "es2017",
     "experimentalDecorators": true,
-    "allowJs": true,
     "emitDecoratorMetadata": true,
-    "outDir": "./dist",
-    "baseUrl": "./"
+
   }
 }

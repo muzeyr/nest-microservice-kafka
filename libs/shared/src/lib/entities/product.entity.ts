@@ -1,10 +1,13 @@
 import { BaseEntity } from './base.entity';
-import { User } from './user.entity';
+import {Column, Entity} from "typeorm";
 
+@Entity()
 export class ProductEntity extends BaseEntity {
+
+  @Column()
   name: string;
 
+  @Column()
   price: number;
 
-  user: User;
 }

@@ -25,15 +25,15 @@ With this shared lib We can keep entity, enum objects and dto objects
 
 ``` nx g @nrwl/node:lib shared ```
 
-###  Creating the api-gateway
-```nx g @nrwl/nest:app api-gateway ```
+###  Creating the api
+```nx g @nrwl/nest:app api ```
 
 ###  Creating first user microservice
-```nx g @nrwl/nest:app user-microservice ```
+```nx g @nrwl/nest:app user ```
 
 
 ##### The following code block should be added to the main.ts in the User micro service.
-// apps/user-microservice/src/main.ts
+// apps/user/src/main.ts
  ```
   async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(
@@ -54,8 +54,8 @@ With this shared lib We can keep entity, enum objects and dto objects
 } 
  ```
 
-####  Every module in the api-gateway repo should be updated in the following structure.
-// apps/api-gateway/src/user/user.module.ts
+####  Every module in the api repo should be updated in the following structure.
+// apps/api/src/user/user.module.ts
 ```
 ClientsModule.register([
   {
@@ -79,10 +79,10 @@ ClientsModule.register([
 
 1. You can follow the steps below to create a new microservice.
 
-``` nx g @nrwl/nest:app product-microservice ```
+``` nx g @nrwl/nest:app product ```
 
 2. Create controllers and services that can be directed by product controllers in the Api-Gateway project.
-``` cd apps/api-gateway ```
+``` cd apps/api ```
 
 ``` nest generate module product ```
 
@@ -90,7 +90,7 @@ ClientsModule.register([
 
 ``` nest generate service product ```
 
-Add ProductModule to the import module in //apps/api-gateway/serc/app/app.module.ts.
+Add ProductModule to the import module in //apps/api/src/app/app.module.ts.
 
 ##### If you need a new entity,
 
@@ -100,3 +100,40 @@ Add ProductModule to the import module in //apps/api-gateway/serc/app/app.module
 ##### Create a new DTO object for Create and Update operations.
 
 //libs/shared/src/lib/dto klasörü altında yeni dto oluştur ve index.ts ile dışarı export etmeyi unutma,
+
+
+### Build user
+
+```
+ nx build user
+```
+
+### Build Product
+
+```
+ nx build product
+```
+
+### App
+
+```
+ nx build app
+```
+
+### Graph micro service
+Understand your workspace
+Run nx graph to see a diagram of the dependencies of your projects.
+
+```bash
+nx graph
+```
+
+
+
+```
+nx serve api
+nx serve user
+nx serve product
+```
+
+

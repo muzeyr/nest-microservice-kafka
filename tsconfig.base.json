@@ -1,21 +1,29 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "rootDir": ".",
-    "sourceMap": true,
-    "declaration": false,
-    "moduleResolution": "node",
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "checkJs": false,
+    "rootDir": ".",
+    "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": ["ESNext"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "baseUrl": ".",
     "paths": {
-      "@nest-microservice-kafka/shared": ["libs/shared/src/index.ts"],
+      "@nest-microservice-kafka/shared":
+      ["libs/shared/src/index.ts"],
       "@nest-microservice-kafka/shared/dto": [
         "libs/shared/src/lib/dto/index.ts"
       ],
@@ -24,6 +32,9 @@
       ],
       "@nest-microservice-kafka/shared/enum": [
         "libs/shared/src/lib/enum/index.ts"
+      ],
+      "@nest-microservice-kafka/shared/config": [
+        "libs/shared/src/lib/config/index.ts"
       ]
     }
   },

@@ -1,0 +1,19 @@
+{
+  "type": "mysql",
+  "host": "localhost",
+  "port": 3306,
+  "username": "zcn",
+  "password": "m!2345KeM",
+  "database": "zcn",
+  "entities": ["libs/shared/src/lib/**/*.entity{.ts,.js}","node_modules/nestjs-admin/**/*.entity.js"],
+  "seeds": ["dist/database/seeds/*.js"],
+  "factories": ["dist/database/factories/*.js"],
+  "synchronize": true,
+  "cli": {
+    "migrationsDir": "src/database/migrations"
+  },
+  "extra": {
+    "charset": "utf8mb4"
+  },
+  "logging": false
+}
