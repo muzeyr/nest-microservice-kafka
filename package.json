@@ -9,15 +9,18 @@
       "start": "ts-node src/index.ts"
    },
    "dependencies": {
+      "@hapi/joi": "^17.1.1",
       "@nestjs/common": "^9.0.0",
       "@nestjs/config": "^2.3.1",
       "@nestjs/core": "^9.0.0",
+      "@nestjs/jwt": "^10.0.2",
       "@nestjs/microservices": "^9.1.2",
       "@nestjs/platform-express": "^9.0.0",
       "@nestjs/swagger": "^6.2.1",
       "@nestjs/typeorm": "^9.0.1",
       "@nrwl/nest": "^15.4.2",
       "@prisma/client": "^4.11.0",
+      "bcrypt": "^5.1.0",
       "bson": "4.5.1",
       "class-transformer": "^0.5.1",
       "class-validator": "^0.13.2",
@@ -29,7 +32,8 @@
       "tslib": "^2.3.0",
       "typeorm": "0.3.12",
       "typeorm-seeding": "^1.6.1",
-      "typeorm-uml": "^1.6.5"
+      "typeorm-uml": "^1.6.5",
+      "uuid": "^9.0.0"
    },
    "devDependencies": {
       "@nestjs/schematics": "^9.0.0",

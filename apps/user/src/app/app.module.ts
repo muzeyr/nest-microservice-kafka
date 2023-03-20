@@ -5,10 +5,13 @@ import { AppService } from './app.service';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { ServiceName } from '@nest-microservice-kafka/shared/enum';
 import { UsersRepository } from './users.repository';
-import {ConfigModule, ConfigService} from "@nestjs/config";
-import {InjectDataSource, TypeOrmModule} from "@nestjs/typeorm";
+import {ConfigModule} from "@nestjs/config";
+import { TypeOrmModule} from "@nestjs/typeorm";
 import {User} from "@nest-microservice-kafka/shared/entity";
 import {typeOrmAsyncConfig} from "../config/typeorm.config";
+import {JwtModule} from "@nestjs/jwt";
+import AppConfigModule from "./config/app/configuration.module";
+import AppConfigService from "./config/app/configuration.service";
 
 @Module({
   imports: [
@@ -28,6 +31,16 @@ import {typeOrmAsyncConfig} from "../config/typeorm.config";
         },
       },
     ]),
+    JwtModule.registerAsync({
+      imports: [AppConfigModule],
+      inject: [AppConfigService],
+      useFactory: async (configService: AppConfigService) => ({
+        secret: configService.jwtSecret,
+        signOptions: {
+          expiresIn: configService.jwtExpires,
+        },
+      }),
+    }),
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
     TypeOrmModule.forFeature([User])

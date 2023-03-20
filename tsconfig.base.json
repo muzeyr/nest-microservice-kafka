@@ -35,6 +35,12 @@
       ],
       "@nest-microservice-kafka/shared/config": [
         "libs/shared/src/lib/config/index.ts"
+      ],
+      "@nest-microservice-kafka/shared/common": [
+        "libs/shared/src/lib/common/index.ts"
+      ],
+      "@nest-microservice-kafka/shared/exception": [
+        "libs/shared/src/lib/exception/index.ts"
       ]
     }
   },

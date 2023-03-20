@@ -2,9 +2,11 @@ import {BeforeInsert, Column, CreateDateColumn, DeepPartial, DeleteDateColumn, I
 import {Exclude, Expose} from "class-transformer";
 import {ApiHideProperty} from "@nestjs/swagger";
 import { ObjectId } from 'bson';
-
+import {Logger} from "@nestjs/common";
+import {v4 as uuidv4} from 'uuid';
 export abstract class BaseEntity {
 
+  private readonly logger: Logger = new Logger(this.constructor.name);
   constructor(input?: DeepPartial<any>) {
     if (input) {
       for (const [key, value] of Object.entries(input)) {
@@ -34,11 +36,13 @@ export abstract class BaseEntity {
   @Index({ unique: false })
   deletedAt?: Date;
 
+  @Column({ nullable: true })
+  @Exclude()
+  cometToken?: string;
+
   @BeforeInsert()
-  async populateSortableId() {
-    const generatedId = new ObjectId(ObjectId.generate()).toHexString();
-    console.log('generatedId',generatedId)
-    this.id = generatedId;
+  async beforeInsert() {
+    this.id = uuidv4();
   }
 
 }

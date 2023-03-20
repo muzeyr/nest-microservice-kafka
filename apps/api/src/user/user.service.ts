@@ -5,7 +5,8 @@ import {
   UserEvent,
 } from '@nest-microservice-kafka/shared/enum';
 import { ClientKafka } from '@nestjs/microservices';
-import { CreateUserDto } from '@nest-microservice-kafka/shared/dto';
+import {CreateUserDto, LocalLoginRequest, UpdatePasswordRequest} from '@nest-microservice-kafka/shared/dto';
+import {User} from "@nest-microservice-kafka/shared/entity";
 
 @Injectable()
 export class UserService {
@@ -15,6 +16,19 @@ export class UserService {
   ) {}
 
   create(createUserDto: CreateUserDto) {
-    this.authClient.emit(UserEvent.USER_CREATE, JSON.stringify(createUserDto));
+    return this.authClient.emit(UserEvent.USER_CREATE, JSON.stringify(createUserDto));
   }
+  changePassword(user: User,updatePasswordRequest: UpdatePasswordRequest) {
+    updatePasswordRequest.user = user;
+    return this.authClient.emit(UserEvent.USER_UPDATE_PASSWORD, JSON.stringify(updatePasswordRequest));
+  }
+
+  login(login: LocalLoginRequest){
+    return this.authClient.emit(UserEvent.USER_LOGIN, JSON.stringify(login));
+  }
+
+  getUserById(id: string){
+    return this.authClient.emit(UserEvent.USER_BYID, id);
+  }
+
 }

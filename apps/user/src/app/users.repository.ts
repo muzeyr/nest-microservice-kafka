@@ -12,9 +12,6 @@ export class UsersRepository {
     this.users.push(user);
   }
 
-  findOne(id: string) {
-    return this.users.find((u) => u.id === id) || null;
-  }
   populateUser(createUserDto: CreateUserDto): User {
     const user = new User();
     user.id = randomUUID();
