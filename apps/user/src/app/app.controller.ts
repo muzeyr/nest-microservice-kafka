@@ -1,12 +1,14 @@
-import {Body, Controller, Get, ParseIntPipe, Patch, Post, ValidationPipe} from '@nestjs/common';
+import {Body, Controller, Get, Logger, ParseIntPipe, Patch, Post, ValidationPipe} from '@nestjs/common';
 
 import { AppService } from './app.service';
 import {Ctx, EventPattern, KafkaContext, MessagePattern, Payload} from '@nestjs/microservices';
-import {CreateUserDto, LocalLoginRequest, UpdatePasswordRequest} from '@nest-microservice-kafka/shared/dto';
+import {CreateUserDto, LoginRequest, UpdatePasswordRequest} from '@nest-microservice-kafka/shared/dto';
 import { UserEvent } from '@nest-microservice-kafka/shared/enum';
 
 @Controller()
 export class AppController {
+  private readonly logger: Logger = new Logger(this.constructor.name);
+
   constructor(private readonly appService: AppService) {}
 
   @Post()
@@ -14,14 +16,28 @@ export class AppController {
     return this.appService.getData();
   }
 
-  @EventPattern(UserEvent.USER_CREATE)
-  async handleUserCreate(@Payload(ValidationPipe) data: CreateUserDto) {
-    return await this.appService.createUser(data);
+  @MessagePattern(UserEvent.USER_CREATE)
+  async handleUserCreate(@Payload(ValidationPipe) data: CreateUserDto,   @Ctx() context: KafkaContext) {
+    const result = await this.appService.createUser(data);
+    delete result.password;
+    const originalMessage = context.getMessage();
+    return {
+      result,
+      offset: originalMessage.offset,
+      timestamp: originalMessage.timestamp,
+    };
   }
 
-  @MessagePattern(UserEvent.USER_BYID)
-  handleGetUser(@Payload('userId') userId: string, @Ctx() context: KafkaContext) {
-    return this.appService.getUser(userId);
+  @MessagePattern(UserEvent.USER_BY_ID)
+  async handleGetUser(@Payload('userId') userId,
+                      @Ctx() context: KafkaContext) {
+    const result = await this.appService.getUser(userId);
+    const originalMessage = context.getMessage();
+    return {
+      result,
+      offset: originalMessage.offset,
+      timestamp: originalMessage.timestamp,
+    };
   }
 
   @EventPattern(UserEvent.USER_UPDATE_PASSWORD)
@@ -30,8 +46,16 @@ export class AppController {
   }
 
   @MessagePattern(UserEvent.USER_LOGIN)
-  login(@Payload() data: LocalLoginRequest, @Ctx() context: KafkaContext) {
-    return this.appService.login(data);
+  async login(@Payload() data: LoginRequest, @Ctx() context: KafkaContext) {
+    const result = await this.appService.login(data);
+    const originalMessage = context.getMessage();
+    return {
+      result,
+      offset: originalMessage.offset,
+      timestamp: originalMessage.timestamp,
+    };
+
+
   }
 
 }

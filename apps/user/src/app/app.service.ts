@@ -1,5 +1,5 @@
-import {HttpStatus, Injectable, Logger} from '@nestjs/common';
-import {CreateUserDto, LocalLoginRequest, UpdatePasswordRequest} from '@nest-microservice-kafka/shared/dto';
+import {HttpStatus, Inject, Injectable, Logger, OnModuleDestroy, OnModuleInit} from '@nestjs/common';
+import {CreateUserDto, LoginRequest, UpdatePasswordRequest} from '@nest-microservice-kafka/shared/dto';
 import { UsersRepository } from './users.repository';
 import { User } from '@nest-microservice-kafka/shared/entity';
 import {InjectRepository} from "@nestjs/typeorm";
@@ -8,29 +8,34 @@ import {ProfileResponse} from "@nest-microservice-kafka/shared/dto";
 import { compareSync } from 'bcrypt';
 import {BaseException, UserNotFoundException} from '@nest-microservice-kafka/shared/exception';
 import {isDefined} from "class-validator";
-import { compare, hash } from 'bcrypt';
 import {LoginResponse} from "../../../../libs/shared/src/lib/dto/user/login.response.dto";
 import { JwtService } from '@nestjs/jwt';
-
+import {ProductEvent, ServiceName, UserEvent} from "@nest-microservice-kafka/shared/enum";
+import {ClientKafka} from "@nestjs/microservices";
+import { getRounds, hash,compare } from 'bcrypt';
 @Injectable()
-export class AppService {
+export class AppService    {
 
   private readonly logger: Logger = new Logger(this.constructor.name);
-  constructor(private readonly usersRepository: UsersRepository,
+  constructor(
+              @Inject(ServiceName.USER_MICROSERVICE)
+              private readonly authClient: ClientKafka,
+              private readonly usersRepository: UsersRepository,
               private readonly jwtService: JwtService,
               @InjectRepository(User)
               private readonly userRepository: Repository<User>,) {}
+
 
   getData(): { message: string } {
     return { message: 'Welcome to user!' };
   }
   async createUser(data: CreateUserDto) {
     try {
-      const user = new User()
+      const user = new User();
       user.email = data.email;
       user.fullName = data.fullName;
+      user.password = await hash(data.password, 10);
       const result = await this.userRepository.save(user);
-      this.logger.warn(result)
       return result;
     }catch (e) {
       this.logger.error(e)
@@ -50,7 +55,7 @@ export class AppService {
     throw new UserNotFoundException();
   }
   async login(
-    loginRequest: LocalLoginRequest,
+    loginRequest: LoginRequest,
   ): Promise<ProfileResponse> {
     const user = await this.userRepository.findOne({
       where:{
@@ -80,15 +85,12 @@ export class AppService {
     return loginResponse;
   }
 
-  async getUser(id: string)  {
-    const user =  await this.userRepository.findOne({
+  async getUser(id: string): Promise<User>  {
+    return await this.userRepository.findOne({
       where: {
         id,
       }
     });
-    this.logger.warn(JSON.stringify(user));
-    return user;
-
   }
 
   public generateUserJwtToken(user: User): string {

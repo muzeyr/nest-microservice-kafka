@@ -41,6 +41,9 @@
       ],
       "@nest-microservice-kafka/shared/exception": [
         "libs/shared/src/lib/exception/index.ts"
+      ],
+      "@nest-microservice-kafka/shared/validators": [
+        "libs/shared/src/lib/validators/index.ts"
       ]
     }
   },

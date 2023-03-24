@@ -23,14 +23,16 @@ export class User extends BaseEntity {
   @BeforeUpdate()
   async hashPasswordField() {
     try {
+      console.log('hashPasswordField11')
       if (this.password && getRounds(this.password) != 10) {
+        console.log('hashPasswordField22')
         this.password = await hash(this.password, 10);
       }
+      console.log('hashPasswordField332')
+
     } catch {
+      console.log('hashPasswordField5555')
       this.password = await hash(this.password, 10);
     }
   }
-
-
-
 }

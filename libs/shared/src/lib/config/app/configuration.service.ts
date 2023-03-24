@@ -13,7 +13,7 @@ export abstract class AppConfigServiceInterface {
 }
 
 @Injectable()
-export default class AppConfigService implements AppConfigServiceInterface {
+export class AppConfigService implements AppConfigServiceInterface {
   constructor(private configService: ConfigService) {}
 
   get jwtSecret(): string {

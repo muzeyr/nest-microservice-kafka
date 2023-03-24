@@ -16,7 +16,6 @@ import { ServiceName } from '@nest-microservice-kafka/shared/enum';
             clientId: ServiceName.PRODUCT,
             brokers: ['localhost:9092'],
           },
-          producerOnlyMode: true,
           consumer: {
             groupId: ServiceName.PRODUCT_CONSUMER,
           },
@@ -30,7 +29,6 @@ import { ServiceName } from '@nest-microservice-kafka/shared/enum';
             clientId: ServiceName.USER,
             brokers: ['localhost:9092'],
           },
-          producerOnlyMode: true,
           consumer: {
             groupId: ServiceName.USER_CONSUMER,
           },

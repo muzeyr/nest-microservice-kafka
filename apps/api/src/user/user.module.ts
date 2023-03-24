@@ -3,6 +3,8 @@ import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { ServiceName } from '@nest-microservice-kafka/shared/enum';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import {PassportModule} from "@nestjs/passport";
+import {ProfileController} from "./profile.controller";
 
 @Module({
   imports: [
@@ -15,15 +17,16 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
             clientId: ServiceName.USER,
             brokers: ['localhost:9092'],
           },
-          producerOnlyMode: true,
           consumer: {
             groupId: ServiceName.USER_CONSUMER,
           },
         },
       },
     ]),
+    PassportModule
   ],
-  controllers: [UserController],
-  providers: [UserService],
+  controllers: [UserController,ProfileController],
+  providers: [UserService,],
+  exports: [UserService],
 })
 export class UserModule {}

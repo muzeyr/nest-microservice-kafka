@@ -12,6 +12,7 @@ import {typeOrmAsyncConfig} from "../config/typeorm.config";
 import {JwtModule} from "@nestjs/jwt";
 import AppConfigModule from "./config/app/configuration.module";
 import AppConfigService from "./config/app/configuration.service";
+import AuthenticationModule from "../../../api/src/app/authentication/authentication.module";
 
 @Module({
   imports: [
@@ -43,8 +44,8 @@ import AppConfigService from "./config/app/configuration.service";
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync(typeOrmAsyncConfig),
-    TypeOrmModule.forFeature([User])
-
+    TypeOrmModule.forFeature([User]),
+    AuthenticationModule,
   ],
   controllers: [AppController],
   providers: [AppService, UsersRepository],

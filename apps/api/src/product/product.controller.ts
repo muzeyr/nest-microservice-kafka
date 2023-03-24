@@ -34,6 +34,7 @@ export class ProductController {
   delete(@Param('id') id: string) {
     return this.productService.delete(id);
   }
+
   @Get()
   async activeProducts() {
     return this.productService.activeProducts();

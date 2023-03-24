@@ -1,4 +1,4 @@
-import { Inject, Injectable, OnModuleInit } from '@nestjs/common';
+import {Inject, Injectable, Logger, OnModuleInit} from '@nestjs/common';
 import {
   ProductEvent,
   ServiceName,
@@ -9,6 +9,8 @@ import { ProductRepository } from './product.repository';
 
 @Injectable()
 export class AppService implements OnModuleInit {
+  private readonly logger: Logger = new Logger(this.constructor.name);
+
   constructor(
     @Inject(ServiceName.PRODUCT_MICROSERVICE)
     private readonly authClient: ClientKafka,
@@ -24,5 +26,7 @@ export class AppService implements OnModuleInit {
 
   onModuleInit(): any {
     this.authClient.subscribeToResponseOf(ProductEvent.PRODUCT_DETAIL);
+
+    this.logger.warn(`${ProductEvent.PRODUCT_DETAIL} subscribed`)
   }
 }

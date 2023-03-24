@@ -1,1 +1,3 @@
-export * from './app/index';
+export {AppConfigModule} from './app/configuration.module';
+export {AppConfigService} from './app/configuration.service';
+export * from './app/configuration';
